@@ -1,0 +1,203 @@
+{% extends "blog/nosidebar_base.html" %}
+{% block content %}
+
+<!-- Page Content -->
+
+<div class="container">
+  <div class="row">
+    <!-- Post Content Column -->
+
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <!-- Title -->
+
+      <h1 class="mt-4 text-center text-uppercase font-weight-bold">{{ post.title }}</h1>
+
+      <!-- Author -->
+
+      <p class="lead text-center">
+        by
+
+        <a href="#">{{ post.author }}</a>
+      </p>
+
+      <hr>
+      <!-- Date/Time -->
+
+      <p class="date text-center">
+        published on {{ post.publish }}
+      </p>
+
+      <hr>
+      <!-- Preview Image -->
+      {% if post.thumbnail != None %}
+
+      <img
+        class="img-fluid rounded"
+        src="{{ post.thumbnail.url }}"
+        alt="post image"
+      >
+
+      {% endif %}
+
+      <hr>
+      <!-- Post Content -->
+
+      <div
+        class="text-justify"
+        id="post-body"
+      >
+        {{ post.body|safe|linebreaks }}
+      </div>
+    </div>
+
+    <!-- post content end -->
+    <!-- share -->
+
+    <div class="col-lg-12">
+      <div class="bg-primary">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-7">
+              <h1 class="display-4 text-white text-md-left text-center">sharing is caring&nbsp;</h1>
+            </div>
+
+            <div class="col-md-5  text-center align-self-center">
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+              >
+                <i class="fa fa-fw fa-instagram fa-2x text-white mx-3"></i>
+              </a>
+
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+              >
+                <i class="fa fa-fw fa-facebook fa-2x text-white mx-3"></i>
+              </a>
+
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+              >
+                <i class="fa fa-fw fa-twitter fa-2x text-white mx-3"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- share -->
+    <!-- Related posts -->
+
+    <div class="col-lg-12">
+      <div class="card my-2">
+        <div class="card-header bg-primary text-center font-weight-bold">Related Posts</div>
+
+        <div class="card-body">
+          <div class="row">
+            {% for post in similar_posts %}
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+              <a
+                style="text-decoration:none"
+                href="{{ post.get_absolute_url }}"
+              >
+                <div
+                  class="card my-1 bg-primary"
+                  style="width: 16rem;"
+                >
+                  {% if post.thumbnail != None %}
+
+                  <img
+                    class="card-img-top"
+                    src="{{ post.thumbnail.url }}"
+                    alt="Card image cap"
+                  >
+
+                  {% endif %}
+
+                  <div class="card-body">
+                    <p class="card-text font-weight-bold">{{ post.title }}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            {% empty %}
+
+            <P
+              class="card-text  alert alert-success"
+              role="alert"
+            >no related posts found</P>
+
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- similar posts end -->
+    <!-- comment section -->
+
+    <div class="col-lg-6 col-md-8 col-sm-12">
+    <!-- Comments Form -->
+    {% if new_comment %}
+    <div class="alert alert-primary" role="alert">
+        <h2>Your comment has been added</h2>
+      </div>
+      {% else %}
+    <h2>Add new comment</h2>
+    <form action="." method="post">
+      <div class="form-group">
+        {{ comment_form.as_p }}
+         {% csrf_token %}
+      </div>
+      <div class="fowm-row text-center">
+      <button type="submit" class="btn btn-primary">add your comment now </button>
+    </div>
+    </form>
+    {% endif %}
+    <!--comment form end-->
+    <!-- comment displaying-->
+    <div class="col-lg-12">
+        <div class="my-2">
+            {% with comments.count as total_comments %}
+                <h2 mx-2>{{ total_comments }} comment{{ total_comments|pluralize }}</h2>
+            {% endwith %}
+            </div>
+      {% for comment in comments %}
+        <div class="card card-inner my-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
+                        <p class="text-secondary text-center">{{ comment.created }}</p>
+                    </div>
+                    <div class="col-md-9">
+                        <p><strong>{{ comment.name }}</strong></a></p>
+                        <p>{{ comment.body }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>no comments yet </p>
+        {% endfor %}
+      <!-- hello-->
+
+    </div>
+
+
+
+  
+    
+
+
+
+    <!-- comment section end -->
+  </div>
+</div>
+
+{% endblock %}
