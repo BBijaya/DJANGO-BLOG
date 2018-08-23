@@ -36,6 +36,10 @@ Now after all the required modules are installed (first cd inot the project dir)
 ```
 python manage.py runserver
 ```
+Dont forget to apply migrations , otherwise the url below will throw error
+```
+python manage.py migrate
+```
 This will start the local development server, acces the blog by going in the following url : http://127.0.0.1:8000/
 Add posts images and see how the blog works
 
